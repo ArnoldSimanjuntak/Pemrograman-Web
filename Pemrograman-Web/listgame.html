@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game List</title>
+    <script>
+        async function fetchGames(query = '') {
+            const response = await fetch(`/games?search=${query}`);
+            const games = await response.json();
+            const gameList = document.getElementById('game-list');
+            gameList.innerHTML = '';
+            games.forEach(game => {
+                const li = document.createElement('li');
+                li.textContent = `${game.name} - ${game.genre}`;
+                gameList.appendChild(li);
+            });
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('search-input').value;
+            fetchGames(query);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchGames();
+        });
+    </script>
+</head>
+<body>
+    <h1>Game List</h1>
+    <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Search for games...">
+    <ul id="game-list"></ul>
+</body>
+</html>
